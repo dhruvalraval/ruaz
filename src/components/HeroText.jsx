@@ -17,14 +17,14 @@ function Component() {
         className='w-full object-cover mix-blend-multiply'
         style={{
           opacity: isLoaded ? 1 : 0,
-          transition: 'opacity 2s ease-in-out 2s',
+          transition: 'opacity 2s ease-in-out 1s',
         }}
       />
       <div
-        className='flex flex-col items-center justify-center w-[92%] md:max-w-2xl gap-4 md:gap-8 pb-32'
+        className='flex flex-col items-center justify-center w-[92%] md:max-w-2xl gap-4 md:gap-8 pb-32 md:pb-32'
         style={{
           opacity: isLoaded ? 1 : 0,
-          transition: 'opacity 2s ease-in-out 3s',
+          transition: 'opacity 2s ease-in-out 2s',
         }}
       >
         <h1 className='text-claret-800 text-xl text-center md:text-4xl capitalize'>
@@ -36,16 +36,16 @@ function Component() {
         </button>
       </div>
       <div
-        className='flex flex-row items-center justify-end w-screen gap-2 mb-2 pr-12 pointer-events-auto'
+        className='absolute bottom-2 flex flex-row items-center justify-center md:justify-end w-screen gap-2 mb-2 pr-0 md:pr-12 pointer-events-auto'
         style={{
           opacity: isLoaded ? 1 : 0,
-          transition: 'opacity 2s ease-in-out 4s',
+          transition: 'opacity 2s ease-in-out 3s',
         }}
       >
         <a
           target='_blank'
           href='https://twitter.com/enravaled'
-          className='text-claret-800 text-lg text-center md:text-xl'
+          className='text-claret-800 text-md text-center md:text-xl'
         >
           Designed & Developed By Dhruval Raval (@enravaled)
         </a>

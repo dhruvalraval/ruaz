@@ -41,6 +41,8 @@ function Component() {
   const { loaded, total } = useProgress()
   const { camera } = useThree()
   const planeMeshRef = useRef()
+
+  const isMobile = window.innerWidth < 768
   let progress = 3
 
   const inkMap = useTexture('/waterc.webp')
@@ -66,7 +68,7 @@ function Component() {
 
   useFrame(() => {
     if (planeMeshRef.current && start && isLoaded) {
-      progress -= 0.01
+      progress -= 0.04
       if (progress < -1) {
         setStart(false)
       }
@@ -100,7 +102,7 @@ function Component() {
       </mesh>
       {!isLoaded && (
         <Html
-          position={[-1, 0, 8]}
+          position={[isMobile ? 0 : -1, 0, 8]}
           style={{
             width: '100%',
             height: '100%',
@@ -108,7 +110,7 @@ function Component() {
             zIndex: 100,
           }}
         >
-          <h3 className='text-3xl text-claret-800 font-serif w-60 mb-4'>
+          <h3 className='text-3xl text-claret-800 font-serif w-30 md:w-60 mb-4'>
             EXPERIENCE DESIGNED AND DEVELOPED BY DHRUVAL RAVAL
           </h3>
           <h1 className='text-3xl text-claret-800 font-serif'>
