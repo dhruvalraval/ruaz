@@ -7,8 +7,7 @@ import {
 import { Canvas } from '@react-three/fiber'
 import { memo, Suspense, useEffect, useRef } from 'react'
 import Background from './Background'
-import Pendant from './models/pendant'
-import Title from './Title'
+import Pendant from './models/Pendant'
 import Water from './Water'
 import Petals from './FloatingPetals'
 import {
