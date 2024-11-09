@@ -36,7 +36,7 @@ function Component() {
         </button>
       </div>
       <div
-        className='absolute bottom-2 flex flex-row items-center justify-center md:justify-end w-screen gap-2 mb-2 pr-0 md:pr-12 pointer-events-auto'
+        className='absolute bottom-8 flex flex-row items-center justify-center md:justify-end w-screen gap-2 mb-2 pr-0 md:pr-12 pointer-events-auto'
         style={{
           opacity: isLoaded ? 1 : 0,
           transition: 'opacity 2s ease-in-out 3s',

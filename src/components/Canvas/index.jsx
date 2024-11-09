@@ -17,6 +17,7 @@ import {
   TiltShift2,
 } from '@react-three/postprocessing'
 import Loader from '../Loader'
+import CameraRot from './CameraRot'
 
 function Component() {
   const controlsRef = useRef()
@@ -53,6 +54,7 @@ function Component() {
           minPolarAngle={Math.PI / 2}
           maxPolarAngle={Math.PI / 2}
         />
+        <CameraRot controls={controlsRef} />
         <EffectComposer>
           <Bloom
             intensity={0.4}

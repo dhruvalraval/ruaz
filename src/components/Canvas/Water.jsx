@@ -97,23 +97,23 @@ const WaterShader = {
   }
 `,
   fragmentShader: `
-          varying vec2 vUv;
+    varying vec2 vUv;
     varying vec3 vNormal;
     varying vec3 vPosition;
-      uniform vec4 uHorizonColor;
-      uniform samplerCube uEnvMap; // The HDR environment map
+    uniform vec4 uHorizonColor;
+    uniform samplerCube uEnvMap; // The HDR environment map
     uniform vec3 uCameraPosition;
   
-      void main() {
-      vec3 I = normalize(vPosition - uCameraPosition); // View direction
-      vec3 R = reflect(I, vNormal); // Reflection vector
-      vec4 reflectionColor = textureCube(uEnvMap, R); // Sample the HDR environment map
+    void main() {
+    vec3 I = normalize(vPosition - uCameraPosition); // View direction
+    vec3 R = reflect(I, vNormal); // Reflection vector
+    vec4 reflectionColor = textureCube(uEnvMap, R); // Sample the HDR environment map
 
-        float fade = smoothstep(0.4,1.0, vUv.y); // Fading out near the horizon
-        vec4 waterColor  = mix(vec4(1,0.6,0.7, 1.0), uHorizonColor, fade); // Ocean to sky color
-        vec4 finalColor = mix(waterColor, reflectionColor, 0.15); // Blend reflection with water color
-        gl_FragColor = vec4(finalColor);
-      }
+      float fade = smoothstep(0.4,1.0, vUv.y); // Fading out near the horizon
+      vec4 waterColor  = mix(vec4(0.8,0.6,0.7, 1.0), uHorizonColor, fade); // Ocean to sky color
+      vec4 finalColor = mix(waterColor, reflectionColor, 0.15); // Blend reflection with water color
+      gl_FragColor = vec4(finalColor);
+    }
     `,
 }
 
@@ -160,7 +160,7 @@ function Component({ texture }) {
       position={[0, -2, 0]}
       scale={5}
     >
-      <planeGeometry args={[20, 20, 256, 256]} />
+      <planeGeometry args={[20, 20, 128, 128]} />
       <shaderMaterial
         uniforms={{ ...WaterShader.uniforms, uEnvMap: { value: texture } }}
         vertexShader={WaterShader.vertexShader}
