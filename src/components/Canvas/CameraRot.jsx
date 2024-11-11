@@ -1,10 +1,24 @@
+import { useProgress } from '@react-three/drei'
 import { useFrame, useThree } from '@react-three/fiber'
-import { memo, useEffect } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { lerp } from 'three/src/math/MathUtils.js'
 
 function Component({ controls }) {
+  const { loaded, total } = useProgress()
+
+  const [isLoaded, setIsLoaded] = useState(false)
+
+  useEffect(() => {
+    if (loaded === total) {
+      const tm = setTimeout(() => {
+        setIsLoaded(true)
+      }, 1000)
+      return () => clearTimeout(tm)
+    }
+  }, [loaded, total])
+
   useFrame(({ pointer }) => {
-    if (controls.current) {
+    if (controls.current && isLoaded) {
       if (pointer.x !== undefined && pointer.y !== undefined) {
         controls.current.setTarget(
           pointer.x * 0.3,
