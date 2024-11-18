@@ -5,12 +5,17 @@ import {
   useGLTF,
   useTexture,
 } from '@react-three/drei'
-import { SRGBColorSpace } from 'three'
-import { useFrame } from '@react-three/fiber'
+import { MeshPhysicalMaterial, SRGBColorSpace } from 'three'
+import { useFrame, useLoader } from '@react-three/fiber'
 import { MathUtils } from 'three'
+import { lerp } from 'three/src/math/MathUtils.js'
+import { EXRLoader } from 'three/examples/jsm/loaders/EXRLoader.js'
 
 function Component(props) {
   const { nodes, materials } = useGLTF('/models/ruaz2-v1.glb')
+
+  const exrTexture = useLoader(EXRLoader, '/gem-2.exr')
+
   const groupRef = useRef()
   useFrame((state, delta) => {
     if (groupRef.current) {
@@ -21,28 +26,39 @@ function Component(props) {
         2.75,
         delta
       )
+
+      if (state.pointer.x !== undefined && state.pointer.y !== undefined) {
+        groupRef.current.rotation.y = lerp(
+          groupRef.current.rotation.y,
+          state.pointer.x,
+          0.05
+        )
+        groupRef.current.rotation.x = lerp(
+          groupRef.current.rotation.x,
+          state.pointer.y * 0.1,
+          0.05
+        )
+      }
     }
   })
 
-  const [displacementMap, goldRoughnessMap, crystalNormalMap, envMap] =
-    useTexture([
-      '/models/Displacement.webp',
-      '/models/gold-scuffed_roughness.webp',
-      '/models/crystal-normal.webp',
-      '/models/blocky_photo_studio_1k.jpg',
-    ])
-  displacementMap.colorSpace =
-    crystalNormalMap.colorSpace =
-    goldRoughnessMap.colorSpace =
-      SRGBColorSpace
-  displacementMap.flipY =
-    crystalNormalMap.flipY =
-    goldRoughnessMap.flipY =
-      false
+  const [displacementMap] = useTexture(['/models/Displacement.webp'])
+  displacementMap.colorSpace = SRGBColorSpace
+  displacementMap.flipY = false
 
-  materials.gold.bumpMap = displacementMap
-  materials.gold.roughnessMap = goldRoughnessMap
-  materials['Emarald.002'].normalMap = crystalNormalMap
+  const goldMat = new MeshPhysicalMaterial({
+    color: 0xe7c257,
+    metalness: 1,
+    roughness: 0,
+    bumpMap: displacementMap,
+    bumpScale: 2,
+    iridescence: 0.1,
+    iridescenceIOR: 1.3,
+    iridescenceThicknessRange: [100, 400],
+    reflectivity: 0.5,
+    specularColor: 0xe7c257,
+    specularIntensity: 1,
+  })
 
   return (
     <group
@@ -57,7 +73,7 @@ function Component(props) {
         castShadow
         receiveShadow
         geometry={nodes.BézierCircle.geometry}
-        material={materials['gold.001']}
+        material={goldMat}
         position={[0, 4.392, 0]}
         rotation={[Math.PI / 2, 0, 0]}
       />
@@ -66,7 +82,7 @@ function Component(props) {
         castShadow
         receiveShadow
         geometry={nodes.face_low001.geometry}
-        material={materials.gold}
+        material={goldMat}
         position={[0, 2.122, -0.004]}
         scale={[0.77, 0.544, 0.77]}
       >
@@ -88,14 +104,14 @@ function Component(props) {
         scale={[0.122, 0.108, 0.108]}
       >
         <MeshRefractionMaterial
-          envMap={envMap}
-          color={0xe0115f}
-          bounces={2}
+          envMap={exrTexture}
+          color={0xe1405c}
+          bounces={4}
           ior={2.8}
           thickness={0.01}
           fresnel={1}
           aberrationStrength={0.01}
-          toneMapped={false}
+          toneMapped={true}
         />
       </mesh>
     </group>

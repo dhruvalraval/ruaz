@@ -41,12 +41,14 @@ function Component() {
           <Pendant />
           <Background />
           <Environment
-            files={'/the_sky_is_on_fire_1k_11zon.jpg'}
+            files={'/gem-2.exr'}
             environmentIntensity={1}
           />
         </Suspense>
+        <CameraRot controls={controlsRef} />
         <CameraControls
           ref={controlsRef}
+          enabled={false}
           dollySpeed={0.000001}
           truckSpeed={0.000001}
           minAzimuthAngle={0}
@@ -54,10 +56,9 @@ function Component() {
           minPolarAngle={Math.PI / 2}
           maxPolarAngle={Math.PI / 2}
         />
-        <CameraRot controls={controlsRef} />
         <EffectComposer>
           <Bloom
-            intensity={0.4}
+            intensity={0.2}
             luminanceThreshold={0.1}
             luminanceSmoothing={0.7}
             height={300}

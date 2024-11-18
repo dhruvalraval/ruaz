@@ -18,14 +18,24 @@ function Component({ controls }) {
   }, [loaded, total])
 
   useFrame(({ pointer }) => {
-    if (controls.current && isLoaded) {
+    if (controls.current && controls.current?.camera && isLoaded) {
       if (pointer.x !== undefined && pointer.y !== undefined) {
-        controls.current.setTarget(
-          pointer.x * 0.3,
-          Math.max(0.02, -pointer.y * 0.3),
-          0,
-          true
+        controls.current.camera.rotation.y = lerp(
+          controls.current.camera.rotation.y,
+          pointer.x * 0.03,
+          0.1
         )
+        controls.current.camera.rotation.x = lerp(
+          controls.current.camera.rotation.x,
+          Math.max(0.02, -pointer.y * 0.03),
+          0.1
+        )
+        // controls.current.setTarget(
+        //   pointer.x * 0.3,
+        //   Math.max(0.02, -pointer.y * 0.3),
+        //   0,
+        //   true
+        // )
       }
     }
   })
